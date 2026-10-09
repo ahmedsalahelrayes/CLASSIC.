@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Classic Print - Luxury Calculator</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap');
+*{box-sizing:border-box;font-family:'Amiri',serif}
+body{margin:0;background:#efebe4;display:flex;justify-content:center;padding:12px}
+.app{width:390px;background:#f6f3ef;border-radius:34px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.2)}
+.logo-top{text-align:center;padding:24px 0 16px;background:#f6f3ef}
+.logo-top .circle{width:88px;height:88px;margin:0 auto;border:1.5px solid #c2a271;border-radius:50%;display:grid;place-items:center;position:relative}
+.logo-top .circle span{font-size:9px;letter-spacing:2px;color:#8a6d3b;font-weight:700}
+.logo-top .circle i{font-style:normal;font-size:28px;color:#c2a271}
+.black{margin:0 8px;background:#101010;color:#fff;border-radius:26px;padding:20px 18px 40px}
+.black h2{margin:0;font-size:19px;line-height:1.2;font-weight:700}
+.black small{opacity:.6;font-size:13px}
+.white{margin:-26px 14px 0;background:#fff;border-radius:22px;padding:18px;border:1px solid #e9ddd0;position:relative;z-index:3}
+.white h3{margin:0;font-size:26px}
+.white p{margin:2px 0 14px;font-size:12px;opacity:.6}
+label{font-size:13px;font-weight:700;margin-top:12px;display:block}
+.row{display:flex;gap:8px;margin-top:6px}
+.row input{flex:1}
+input,select{width:100%;padding:10px 12px;border:1.4px solid #d7c7a6;border-radius:10px;background:#fdf8ef;outline:none;text-align:center}
+select{text-align:right}
+.gold-btn{width:100%;margin-top:18px;background:linear-gradient(to bottom,#dcc28a,#b9975b);border:none;padding:14px;border-radius:12px;font-size:18px;font-weight:700;cursor:pointer;box-shadow:0 8px 20px rgba(185,151,91,.4)}
+.result{margin:14px;background:linear-gradient(to bottom,#fffdf8,#f8efe0);border:1.5px solid #d7c7a6;border-radius:18px;padding:16px}
+.result .line{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed #d7c7a6}
+.result .line:last-child{border:none}
+.result b{font-size:18px}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="logo-top">
+    <div class="circle"><div><i>☤</i><br><span>CLASSIC PRINT</span></div></div>
+  </div>
+  <div class="black">
+    <h2>Classic Print Pharmaceutical<br>Packaging</h2>
+    <small>حاسبة سعر عبوة الصندوق</small>
+  </div>
+  <div class="white">
+    <h3>حاسبة السعر</h3>
+    <p>أدخل تفاصيل العبوة لحساب التكلفة والسعر</p>
+
+    <label>أبعاد الصندوق (مم)</label>
+    <div class="row">
+      <div style="flex:1"><small>الطول</small><input id="L" value="120"></div>
+      <div style="flex:1"><small>العرض</small><input id="W" value="80"></div>
+      <div style="flex:1"><small>الارتفاع</small><input id="H" value="50"></div>
+    </div>
+
+    <label>الكمية (عدد العلب)</label>
+    <input id="qty" value="1000">
+
+    <label>نوع المادة</label>
+    <select id="mat">
+      <option value="0.9">كرتون مضلع</option>
+      <option value="1.2" selected>دوبلكس 300جم</option>
+      <option value="1.6">دوبلكس 350جم + بصمة دهب</option>
+    </select>
+
+    <label>التشطيب</label>
+    <select id="fin">
+      <option value="0.15">لامع</option>
+      <option value="0.25">مط</option>
+      <option value="0.45">سبوت UV</option>
+    </select>
+
+    <label>هامش الربح (%)</label>
+    <input id="profit" value="25">
+
+    <button class="gold-btn" onclick="doCalc()">حساب السعر</button>
+  </div>
+
+  <div class="result" id="box">
+    <div style="text-align:center;font-weight:700;font-size:20px">✓ النتيجة</div>
+    <div class="line"><span>السعر المقدر للعلبة:</span><b id="one">0.00 ر.س</b></div>
+    <div class="line"><span>التكلفة الإجمالية:</span><b id="total">0.00 ر.س</b></div>
+    <div style="margin-top:10px;font-size:12px;opacity:.7" id="details"></div>
+  </div>
+  <div style="height:16px"></div>
+</div>
+
+<script>
+function doCalc(){
+ let L=+document.getElementById('L').value,
+ W=+document.getElementById('W').value,
+ H=+document.getElementById('H').value,
+ Q=+document.getElementById('qty').value,
+ mat=+document.getElementById('mat').value,
+ fin=+document.getElementById('fin').value,
+ prof=+document.getElementById('profit').value;
+
+ let materialCost = (L+W+H)/100 * mat;
+ let finishCost = fin;
+ let base = materialCost + finishCost + 0.35;
+ let boxPrice = base * (1+prof/100);
+ let tot = boxPrice*Q;
+
+ document.getElementById('one').innerText = boxPrice.toFixed(2)+' ر.س';
+ document.getElementById('total').innerText = tot.toFixed(2)+' ر.س';
+ document.getElementById('details').innerHTML = • تكلفة المادة: ${materialCost.toFixed(2)} ر.س<br>• تكلفة التشطيب: ${finishCost.toFixed(2)} ر.س<br>• هامش الربح (${prof}%): ${(boxPrice-base).toFixed(2)} ر.س;
+}
+doCalc();
+</script>
+</body>
+</html>
